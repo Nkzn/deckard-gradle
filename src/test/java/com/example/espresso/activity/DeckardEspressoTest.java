@@ -1,15 +1,22 @@
 package com.example.espresso.activity;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.example.R;
 import com.example.robolectric.DeckardActivity;
 
-import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
-import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewAssertions.matches;
-import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
-import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+@RunWith(AndroidJUnit4.class)
 @LargeTest
 public class DeckardEspressoTest extends ActivityInstrumentationTestCase2<DeckardActivity> {
 
@@ -18,13 +25,16 @@ public class DeckardEspressoTest extends ActivityInstrumentationTestCase2<Deckar
        // This constructor was deprecated - but we want to support lower API levels.
        super("com.example.activity", DeckardActivity.class);
      }
-    @Override
+
+    @Before
     public void setUp() throws Exception {
         super.setUp();
+        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         // Espresso will not launch our activity for us, we must launch it via getActivity().
         getActivity();
     }
 
+    @Test
     public void testCheckText() {
         onView(withId(R.id.text))
             .check(matches(withText("Hello Espresso!")));
